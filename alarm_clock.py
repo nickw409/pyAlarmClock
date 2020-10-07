@@ -41,7 +41,7 @@ def main():
     init_alarm(alarm)
 
     while True:
-        current_time = datetime.now.strftime("%H:%M")
+        current_time = datetime.now().strftime("%H:%M")
         print(current_time)
 
         if current_time == alarm.time:
