@@ -5,10 +5,12 @@ from datetime import datetime
 import wakeup_game as wakeup
 
 if platform.system() == "Linux":
-    import pygame
     from gpiozero import Button
-
-
+    import pygame
+    pygame.mixer.pre_init(frequency=44100, size=-16, channels=2)
+    pygame.mixer.init()
+    pygame.mixer.music.load("/home/pi/python_code/alarm_clock/alarm_sounds/solid_snake_is_dummy_thicc.wav")
+    print("Sound initialized")
 
 
 class Alarm:
@@ -22,22 +24,18 @@ class Alarm:
         #time is a string with format %HH:%MM
         self.time = time
 
-def init_sound():
-    pygame.mixer.pre_init(frequency=44100, size=-16, channels=2)
-    pygame.mixer.init()
-    pygame.mixer.music.load("/home/pi/python_code/alarm_clock/alarm_sounds/solid_snake_is_dummy_thicc.wav")
 
 def init_alarm(alarm):
     print("Starting up...\n")
     alarm.game.warm_up()
     pygame.mixer.music.play()
+    print("Playing alarm sound")
     time.sleep(3)
     pygame.mixer.music.stop()
     random.seed(time.time())
 
 def main():
     alarm = Alarm()
-    init_sound()
     init_alarm(alarm)
 
     while True:

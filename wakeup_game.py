@@ -21,13 +21,13 @@ class Game:
 
     def warm_up(self):
         #Tests if hardware is working properly
-        led1.blink()
-        led2.blink()
-        led3.blink()
+        self.led1.blink()
+        self.led2.blink()
+        self.led3.blink()
         time.sleep(5)
-        led1.off()
-        led2.off()
-        led3.off()
+        self.led1.off()
+        self.led2.off()
+        self.led3.off()
 
 
     def start_game(self):
@@ -42,35 +42,35 @@ class Game:
             rand_interval = random.randint(1, 5)
             time.sleep(rand_interval)
             if rand_led == 1:
-                led1.on()
+                self.led1.on()
                 print("led1 on\n")
                 attempted += 1
                 led_start_time = time.time()
                 while(time.time()-led_start_time) < 2:
-                    if button1.is_pressed:
+                    if self.button1.is_pressed:
                         correct += 1
                         break
-                led1.off()
+                self.led1.off()
             elif rand_led == 2:
-                led2.on()
+                self.led2.on()
                 print("led2 on\n")
                 attempted += 1
                 led_start_time = time.time()
                 while (time.time()-led_start_time) < 2:
-                    if button2.is_pressed:
+                    if self.button2.is_pressed:
                         correct += 1
                         break
-                led2.off()
+                self.led2.off()
             elif rand_led == 3:
-                led3.on()
+                self.led3.on()
                 print("led3 on\n")
                 attempted += 1
                 led_start_time = time.time()
                 while (time.time()-led_start_time) < 2:
-                    if button3.is_pressed:
+                    if self.button3.is_pressed:
                         correct += 1
                         break
-                led3.off()
+                self.led3.off()
         print(str(attempted-correct))
         if (attempted - correct) < 3:
             return True
