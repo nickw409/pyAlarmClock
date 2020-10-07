@@ -1,68 +1,65 @@
 #! /usr/bin/env python
 
-import pygame,time,sys
-import datetime
-from gpiozero import Button
-import wakeup_game as game
-import random
+import random, time, platform
+from datetime import datetime
+import wakeup_game as wakeup
+
+if platform.system() == "Linux":
+    import pygame
+    from gpiozero import Button
 
 
-pygame.mixer.pre_init(frequency=44100, size=-16, channels=2)
-pygame.mixer.init()
-random.seed(time.time())
-#if (random.randint(0,2) == 1):
-pygame.mixer.music.load("/home/pi/python_code/alarm_clock/alarm_sounds/solid_snake_is_dummy_thicc.wav")
-#pygame.mixer.music.play(2)
-#else:
-    #pygame.mixer.music.load("/home/pi/python_code/alarm_clock/alarm_sounds/Thomas_The_Tank_Engine_Earrape.wav")
-    #pygame.mixer.music.play(2)
 
-button = Button(17)
-f_output = ("/home/pi/python_code/alarm_clock/output.txt")
 
-with open(f_output, 'a') as output_file:
-    output_file.write("New Run:\n")
+class Alarm:
+    def __init__(self, time="06:00"):
+        self.snooze = Button(17)
+        self.game = wakeup.Game()
+        self.time = time
+        self.status = False
 
-print("Starting up...\n")
-game.warmUp()
-pygame.mixer.music.play()
-time.sleep(3)
-pygame.mixer.music.stop()
+    def set_time(self, time):
+        #time is a string with format %HH:%MM
+        self.time = time
 
-reset_timer = 0
+def init_sound():
+    pygame.mixer.pre_init(frequency=44100, size=-16, channels=2)
+    pygame.mixer.init()
+    pygame.mixer.music.load("/home/pi/python_code/alarm_clock/alarm_sounds/solid_snake_is_dummy_thicc.wav")
 
-while True:
-    current_time_struct = time.localtime()
-    current_time = "{}:{}:{}".format(current_time_struct[3],
-                                        current_time_struct[4],
-                                        current_time_struct[5])
+def init_alarm(alarm):
+    print("Starting up...\n")
+    alarm.game.warm_up()
+    pygame.mixer.music.play()
+    time.sleep(3)
+    pygame.mixer.music.stop()
+    random.seed(time.time())
 
-    print(current_time)
-    alarm = False
-    if current_time == "6:0:0":
-        time.sleep(3)
-        startTime = time.time()
-        alarm = True
-        pygame.mixer.music.play(4)
-        with open(f_output, 'w') as f:
-            f.write("New Day\n")
-        while alarm:
-            if button.is_pressed:
-                pygame.mixer.music.stop()
-                time.sleep(5)
-                passed = game.start_game()
-                if passed:
-                    alarm = False
-                else:
-                    pygame.mixer.music.play(4)
-            #elif (time.time() - startTime) > 40:
-            #    print(time.time()-startTime)
-            #    pygame.mixer.music.play(1)
-            #    startTime = time.time()
+def main():
+    alarm = Alarm()
+    init_sound()
+    init_alarm(alarm)
 
-    with open(f_output, 'a') as f:
+    while True:
+        current_time = datetime.now.strftime("%H:%M")
+        print(current_time)
 
-        if current_time[-1:] == "0" or current_time[-2:] == "30":
-            f.write(current_time + "\n")
+        if current_time == alarm.time:
+            time.sleep(3)
+            startTime = time.time()
+            alarm.status = True
+            pygame.mixer.music.play(4)
+            while alarm.status:
+                if alarm.snooze.is_pressed:
+                    pygame.mixer.music.stop()
+                    time.sleep(5)
+                    passed = alarm.game.start_game()
+                    if passed:
+                        alarm.status = False
+                    else:
+                        pygame.mixer.music.play(4)
 
-    time.sleep(1)
+        time.sleep(1)
+
+if __name__ == "__main__":
+    main()
