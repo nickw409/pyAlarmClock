@@ -41,8 +41,8 @@ class Alarm:
 
 
 def check_args():
-    if len(sys.argv) < 3:
-        print("Too few args, must include server ip and port")
+    if len(sys.argv) < 2:
+        print("Too few args, must include server ip")
         exit(1)
     if sys.argv[1] == "-h":
         print("alarm_clock.py <server_ip>")
@@ -85,11 +85,10 @@ def run_alarm():
 def main():
     check_args()
     server_ip = sys.argv[1]
-    server_port = sys.argv[2]
     print("main")
     threading.Thread(target=client.run, 
                         daemon=True, 
-                        args=(server_ip, server_port)
+                        args=(server_ip,)
                      ).start()
     
     run_alarm()

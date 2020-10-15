@@ -5,6 +5,7 @@ __pycache__/
 
 error_log.txt
 output.txt
+*.txt
 
 .vscode
 
