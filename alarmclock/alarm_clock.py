@@ -1,8 +1,9 @@
 #! /usr/bin/env python
 
-import random, time, platform, sys, socket, os
+import random, time, platform, sys, os, threading
 from datetime import datetime
 import wakeup_game as wakeup
+from . import client
 
 if platform.system() == "Linux":
     from gpiozero import Button
@@ -14,12 +15,13 @@ if platform.system() == "Linux":
 
 
 class Alarm:
-    def __init__(self, time="06:00"):
+    def __init__(self):
         self.snooze = Button(17)
         self.game = wakeup.Game()
         self.status = False
-        self.alarms_file = "times.txt"
-        set_time(time)
+        self.alarms_file = "alarm_times.txt"
+        if not (os.path.isfile(self.alarms_file)):
+            set_time("06:00")
 
     def set_time(self, time):
         #time is a string with format %HH:%MM
@@ -28,15 +30,15 @@ class Alarm:
     
     def get_time(self):
         try:
-            with open(self.alarms_file) as f:
+            with open(self.alarms_file, 'r') as f:
                 return f.read()
         except OSError as error:
             print("file not found, recreate alarm object.")
 
 
 def check_args():
-    if len(sys.argv) < 2:
-        print("Too few args, must include server ip")
+    if len(sys.argv) < 3:
+        print("Too few args, must include server ip and port")
         exit(1)
     if sys.argv[1] == "-h":
         print("alarm_clock.py <server_ip>")
@@ -73,14 +75,18 @@ def run_alarm():
                     else:
                         pygame.mixer.music.play(4)
 
-        time.sleep(1)
+        time.sleep(50)
 
 def main():
     check_args()
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STEAM)
     server_ip = sys.argv[1]
-    sock.connect((server_ip, 2550))
-    new_time = sock.recv()
+    server_port = sys.argv[2]
+    
+    t = threading.Thread(target=client.run, 
+                        daemon=True, 
+                        args=(server_ip, server_port)
+                    )
+    t.start()
     
 
 if __name__ == "__main__":
