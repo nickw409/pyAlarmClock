@@ -1,15 +1,13 @@
-<html>
-    <head style="background-color:black;color:white">
-        <h1 style="background-color:darkgray;color:white">Alarm Clock</h1>
-        <div>Time
-            <form id="alarmTimeForm">
-                <input id="alarmTime" type="text">
-                <button type="submit">Submit</button>
-            </form>
-        </div>
-    </head>
+{% extends 'base.html' %}
 
-    <script>
-        document.getElementById("alarm").innerText = "05:00";
-    </script>
-</html>
+{% block header %}
+  <h1>{% block title %}Settings{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+  <form method="post">
+    <label for="alarmTimeForm">Alarm Time</label>
+    <input name="alarmTimeForm" id="alarmTimeForm" required>
+    <input type="submit" value="Submit">
+  </form>
+{% endblock %}

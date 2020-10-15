@@ -4,22 +4,21 @@ from flask import (
 )
 
 
-bp = Blueprint('alarm',  __name__, url_prefix='/alarm')
+bp = Blueprint('alarm',  __name__)
 
-@bp.route('/settings', methods=('GET', 'POST'))
-def register():
+@bp.route('/', methods=('GET', 'POST'))
+def get_input():
     if request.method == 'POST':
         alarm_time = request.form['alarmTimeForm']
         error = None
 
         if not alarm_time:
             error = "Need to submit an alarm time"
+            flash(error)
         
         if error is None:
             with open("alarm_time.txt", 'w') as f:
-                f.write(alarm_time)
-        
-        flash(error)
-    
-    return render_template('alarm/settings.html')
+                f.write(alarm_time)      
+           
+    return render_template('settings.html')
 

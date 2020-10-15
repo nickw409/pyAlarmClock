@@ -25,16 +25,12 @@ def create_app(test_config=None):
         pass
 
     app.register_blueprint(alarm.bp)
+    app.add_url_rule("/", endpoint="get_input")
 
     with open("alarm_time.txt", 'w') as f:
-        f.write("")
+        f.write("Starting up")
     
     t = threading.Thread(target=server.run, daemon=True)
     t.start()
-
-    #simple hello world test function
-    @app.route('/')
-    def hello():
-        return 'Hello, World!'
     
     return app
