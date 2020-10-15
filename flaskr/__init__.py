@@ -30,7 +30,6 @@ def create_app(test_config=None):
     with open("alarm_time.txt", 'w') as f:
         f.write("Starting up")
     
-    t = threading.Thread(target=server.run, daemon=True)
-    t.start()
+    threading.Thread(target=server.run, daemon=True).start()
     
     return app

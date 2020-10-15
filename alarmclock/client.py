@@ -1,8 +1,9 @@
 import socket
 
-FILE = "alarm_times.txt"
+FILE_NAME = "alarm_times.txt"
 
 def run(ip, port):
+    print("Threading")
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     connect(sock, (ip, port))
     while True:
@@ -11,7 +12,7 @@ def run(ip, port):
             print("Connection broken, reconnecting...")
             connect(sock, (ip, port))
         else:
-            with open(FILE, 'w') as f:
+            with open(FILE_NAME, 'w') as f:
                 f.write(time)
 
 def connect(sock, addr):

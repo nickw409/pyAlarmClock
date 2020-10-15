@@ -60,7 +60,8 @@ def init_alarm(alarm):
 def run_alarm():
     alarm = Alarm()
     init_alarm(alarm)
-
+    print("run alarm")
+    
     while True:
         current_time = datetime.now().strftime("%H:%M")
         print(alarm.get_time())
@@ -85,13 +86,12 @@ def main():
     check_args()
     server_ip = sys.argv[1]
     server_port = sys.argv[2]
-    
-    t = threading.Thread(target=client.run, 
+    print("main")
+    threading.Thread(target=client.run, 
                         daemon=True, 
                         args=(server_ip, server_port)
-                     )
-    t.start()
-
+                     ).start()
+    
     run_alarm()
     
 

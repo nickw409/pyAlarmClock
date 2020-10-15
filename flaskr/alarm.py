@@ -20,5 +20,4 @@ def get_input():
             with open("alarm_time.txt", 'w') as f:
                 f.write(alarm_time)      
            
-    return render_template('settings.html')
-
+    return render_template('settings.html') 

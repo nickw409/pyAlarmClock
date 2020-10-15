@@ -15,8 +15,7 @@ def run():
 
     q = Queue()
 
-    t = threading.Thread(target=threader, daemon=True, args=(q,))
-    t.start()
+    threading.Thread(target=threader, daemon=True, args=(q,)).start()
     
     #use a nonblocking socket
     while True:
@@ -24,11 +23,11 @@ def run():
             [server_sock], [], [], 1
         )
         if len(read_sock) > 0 and read_sock[0]:
-            #print("incoming connection")
+            print("incoming connection")
             (client, addr) = server_sock.accept()
             q.put(client)
-        #else:
-            #print("waiting")
+        else:
+            print("waiting")
 
 def threader(q):
     with open(FILE_NAME, 'r') as f:
