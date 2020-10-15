@@ -3,14 +3,18 @@
 import random, time, platform, sys, os, threading
 from datetime import datetime
 import wakeup_game as wakeup
-from . import client
+import client
 
 if platform.system() == "Linux":
     from gpiozero import Button
     import pygame
     pygame.mixer.pre_init(frequency=44100, size=-16, channels=2)
     pygame.mixer.init()
-    pygame.mixer.music.load("alarm_sounds/solid_snake_is_dummy_thicc.wav")
+    sound_file = "solid_snake_is_dummy_thicc.wav"
+    script_dir = os.path.dirname(os.path.realpath(__file__))
+    project_dir, script_dir = os.path.split(script_dir)
+    sound_dir = os.path.join(project_dir, "alarm_sounds",)
+    pygame.mixer.music.load(os.path.join(sound_dir, sound_file))
     print("Sound initialized")
 
 
@@ -21,7 +25,7 @@ class Alarm:
         self.status = False
         self.alarms_file = "alarm_times.txt"
         if not (os.path.isfile(self.alarms_file)):
-            set_time("06:00")
+            self.set_time("06:00")
 
     def set_time(self, time):
         #time is a string with format %HH:%MM
@@ -85,8 +89,10 @@ def main():
     t = threading.Thread(target=client.run, 
                         daemon=True, 
                         args=(server_ip, server_port)
-                    )
+                     )
     t.start()
+
+    run_alarm()
     
 
 if __name__ == "__main__":
