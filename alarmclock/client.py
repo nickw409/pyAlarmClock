@@ -1,6 +1,7 @@
-import socket, time
+import socket, time, os
 
-FILE_NAME = "alarm_times.txt"
+script_dir = os.path.dirname(os.path.realpath(__file__))
+FILE_NAME = os.path.join(script_dir, "alarm_times.txt")
 PORT = 2550
 IP = "10.0.0.48"
 

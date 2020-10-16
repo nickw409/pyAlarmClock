@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/python3
 
 import random, time, platform, sys, os, threading
 from datetime import datetime
@@ -23,9 +23,9 @@ class Alarm:
         self.snooze = Button(17)
         self.game = wakeup.Game()
         self.status = False
-        self.alarms_file = "alarm_times.txt"
-        if not (os.path.isfile(self.alarms_file)):
-            self.set_time("06:00")
+        script_dir = os.path.dirname(os.path.realpath(__file__))
+        self.alarms_file = os.path.join(script_dir, "alarm_times.txt")
+
 
     def set_time(self, time):
         #time is a string with format %HH:%MM

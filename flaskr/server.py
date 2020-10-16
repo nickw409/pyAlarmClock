@@ -18,6 +18,7 @@ def run():
     threading.Thread(target=threader, daemon=True, args=(q,)).start()
     
     #use a nonblocking socket
+    print("waiting...")
     while True:
         read_sock, write_sock, error = select.select(
             [server_sock], [], [], 1
@@ -26,8 +27,7 @@ def run():
             print("incoming connection")
             (client, addr) = server_sock.accept()
             q.put(client)
-        else:
-            print("waiting")
+            
 
 def threader(q):
     with open(FILE_NAME, 'r') as f:
