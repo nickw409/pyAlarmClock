@@ -26,6 +26,7 @@ def run():
         if len(read_sock) > 0 and read_sock[0]:
             print("incoming connection")
             (client, addr) = server_sock.accept()
+            print("Connected to", addr)
             q.put(client)
             
 
