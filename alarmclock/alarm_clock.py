@@ -60,13 +60,18 @@ def init_alarm(alarm):
 def run_alarm():
     alarm = Alarm()
     init_alarm(alarm)
-    print("run alarm")
-    
+    #print("run alarm")
+    alarm_time = alarm.get_time().strip()
+    print("Currently set alarm time: ", alarm_time)
     while True:
-        current_time = datetime.now().strftime("%H:%M")
-        print(alarm.get_time())
+        current_time = datetime.now().strftime("%H:%M").strip()
+        alarm_time = alarm.get_time().strip()
+        #print(current_time)
+        #print(alarm_time)
+        #print((current_time == alarm_time))
 
-        if current_time == alarm.get_time():
+        if current_time == alarm_time:
+            print("Alarm ringing")
             time.sleep(3)
             alarm.status = True
             pygame.mixer.music.play(4)
@@ -80,7 +85,7 @@ def run_alarm():
                     else:
                         pygame.mixer.music.play(4)
 
-        time.sleep(50)
+        time.sleep(30)
 
 def main():
     check_args()
