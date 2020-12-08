@@ -9,7 +9,7 @@ else:
 def run():
     server_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server_sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-    server_sock.setblocking(0)
+    server_sock.setblocking(False)
     server_sock.bind(('', 2550))
     server_sock.listen(5)
 
@@ -21,7 +21,7 @@ def run():
     print("waiting...")
     while True:
         read_sock, write_sock, error = select.select(
-            [server_sock], [], [], 1
+            [server_sock], [], [], 60
         )
         if len(read_sock) > 0 and read_sock[0]:
             print("incoming connection")

@@ -2,7 +2,7 @@
 
 import random, time, platform, sys, os, threading
 from datetime import datetime
-import wakeup_game as wakeup
+#import wakeup_game as wakeup
 import client
 
 if platform.system() == "Linux":
@@ -20,8 +20,8 @@ if platform.system() == "Linux":
 
 class Alarm:
     def __init__(self):
-        self.snooze = Button(17)
-        self.game = wakeup.Game()
+        #self.snooze = Button(17)
+        #self.game = wakeup.Game()
         self.status = False
         script_dir = os.path.dirname(os.path.realpath(__file__))
         self.alarms_file = os.path.join(script_dir, "alarm_times.txt")
@@ -50,7 +50,7 @@ def check_args():
 
 def init_alarm(alarm):
     print("Starting up...\n")
-    alarm.game.warm_up()
+    #alarm.game.warm_up()
     pygame.mixer.music.play()
     print("Playing alarm sound")
     time.sleep(3)
@@ -73,13 +73,13 @@ def run_alarm():
         if current_time == alarm_time:
             print("Alarm ringing")
             time.sleep(3)
-            alarm.status = True
+            #alarm.status = True
             pygame.mixer.music.play(4)
             while alarm.status:
                 if alarm.snooze.is_pressed:
                     pygame.mixer.music.stop()
                     time.sleep(5)
-                    passed = alarm.game.start_game()
+                    #passed = alarm.game.start_game()
                     if passed:
                         alarm.status = False
                     else:
