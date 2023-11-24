@@ -11,11 +11,12 @@ class Alarm:
         self.__alarms_file = os.path.join(script_dir, alarm_file)
         self.__player = Player()
 
-        print("Starting up...\n")
+        print("\nStarting up...\n")
         self.__player.play()
         print("Playing alarm sound")
         time.sleep(3)
         self.__player.stop()
+        print("\nInitialization completed\n")
 
     def get_time(self):
         try:
@@ -25,11 +26,11 @@ class Alarm:
             print("file not found, recreate alarm object.")
 
     def run_alarm(self):
-        print("Currently set alarm time: ", self.get_time.strip())
+        print("Currently set alarm time: ", self.get_time().strip())
         while True:
             current_time = datetime.now().strftime("%H:%M").strip()
 
-            if current_time == self.get_time.strip():
+            if current_time == self.get_time().strip():
                 print("Alarm ringing")
                 time.sleep(3)
                 self.__player.play()

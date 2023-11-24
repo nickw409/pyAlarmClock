@@ -26,13 +26,15 @@ class Player:
     def play(self):
         if self.__status:
             pygame.mixer.music.play()
+            print("Sound playing through speakers")
         
         else:
-            print("Sound playing")
+            print("Sound playing through nothing")
         
     def stop(self):
         if self.__status:
             pygame.mixer.music.stop()
+            print("Sound stopped playing through speakers")
         
         else:
-            print("Sound stopped")
+            print("Sound stopped playing through nothing")
